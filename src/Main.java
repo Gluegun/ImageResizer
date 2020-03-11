@@ -14,7 +14,7 @@ public class Main {
     static String dstFolder = "/users/kvy/Desktop/dst";
 
     public static void main(String[] args) {
-        
+
         File srcDir = new File(srcFolder);
 
         File[] files = srcDir.listFiles();
