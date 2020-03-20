@@ -4,6 +4,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import org.imgscalr.*;
 
 public class Main {
 
@@ -12,6 +13,7 @@ public class Main {
     static int newWidth = 300;
     static String srcFolder = "/users/kvy/Desktop/src";
     static String dstFolder = "/users/kvy/Desktop/dst";
+    static Scalr.Method method = Scalr.Method.QUALITY;
 
     public static void main(String[] args) {
 
@@ -25,9 +27,12 @@ public class Main {
 
         List<File[]> filesList = createListOfFileArrays(arrayOfFileLengths, files);
 
-        List<ImageResizer> imageResizers = createImageResizerList(filesList);
+//        List<ImageResizer> imageResizers = createImageResizerList(filesList);
+//
+//        imageResizers.forEach(imageResizer -> new Thread(imageResizer).start());
 
-        imageResizers.forEach(imageResizer -> new Thread(imageResizer).start());
+        List<TestResizer> testResizers = createTestResizerList(filesList);
+        testResizers.forEach(testResizer -> new Thread(testResizer).start());
 
     }
 
@@ -72,6 +77,16 @@ public class Main {
         }
 
         return imageResizers;
+    }
+
+    public static List<TestResizer> createTestResizerList(List<File[]> files) {
+        List<TestResizer> testResizers = new ArrayList<>();
+
+        for (File[] file : files) {
+            testResizers.add(new TestResizer(file, dstFolder, newWidth, method, System.currentTimeMillis()));
+        }
+
+        return testResizers;
     }
 
 }
