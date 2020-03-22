@@ -2,19 +2,21 @@ import org.imgscalr.Scalr;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 
-public class TestResizer implements Runnable {
+public class TestResizer extends Thread {
 
     private int targetWidth;
     private File[] files;
     private long start;
     private String dstFolder;
     private Scalr.Method method;
+    private static int size = 300;
 
 
     public TestResizer(File[] files, String dstFolder, int targetWidth, Scalr.Method method, long start) {
@@ -34,18 +36,33 @@ public class TestResizer implements Runnable {
 
                 BufferedImage img = ImageIO.read(image);
 
-                BufferedImage thumbnail;
                 int targetHeight = (int) Math.round(
                         img.getHeight() / (img.getWidth() / (double) targetWidth)
                 );
 
-                String typeOfMethod;
+//                String typeOfMethod = method.toString();
+//                BufferedImage thumbnail = Scalr.resize(img, method, Scalr.Mode.FIT_TO_HEIGHT, targetWidth, targetHeight);
+//
+//
+//                File newFile = new File(dstFolder + "/" + typeOfMethod + "_" + targetWidth + "_" + targetHeight + "_"
+//                        + image.getName());
+//                ImageIO.write(thumbnail, "jpeg", newFile);
 
-                typeOfMethod = method.toString();
-                thumbnail = Scalr.resize(img, method, Scalr.Mode.FIT_TO_HEIGHT, targetWidth, targetHeight);
-                File newFile = new File(dstFolder + "/" + typeOfMethod + "_" + targetWidth + "_" + targetHeight + "_"
-                        + image.getName());
-                ImageIO.write(thumbnail, "jpeg", newFile);
+
+                Scalr.Method firstMethod = Scalr.Method.SPEED;
+                Scalr.Method secondMethod = Scalr.Method.ULTRA_QUALITY;
+
+                BufferedImage firstStep;
+                BufferedImage secondStep;
+
+//                firstStep = Scalr.resize(img, firstMethod, Scalr.Mode.AUTOMATIC, targetWidth, targetHeight);
+                firstStep = Scalr.resize(img, firstMethod, size * 2);
+                secondStep = Scalr.resize(firstStep, secondMethod, size);
+
+                File newFile1 = new File(dstFolder + "/" + size + image.getName());
+
+                ImageIO.write(secondStep, "jpeg", newFile1);
+
 
             }
 

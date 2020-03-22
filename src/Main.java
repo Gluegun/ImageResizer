@@ -11,8 +11,8 @@ public class Main {
 
     static int amountToBeSplit = Runtime.getRuntime().availableProcessors();
     static int newWidth = 300;
-    static String srcFolder = "/users/kvy/Desktop/src";
-    static String dstFolder = "/users/kvy/Desktop/dst";
+    static String srcFolder = "/users/sunpu/Desktop/src";
+    static String dstFolder = "/users/sunpu/Desktop/dst";
     static Scalr.Method method = Scalr.Method.QUALITY;
 
     public static void main(String[] args) {
@@ -27,12 +27,12 @@ public class Main {
 
         List<File[]> filesList = createListOfFileArrays(arrayOfFileLengths, files);
 
-//        List<ImageResizer> imageResizers = createImageResizerList(filesList);
-//
-//        imageResizers.forEach(imageResizer -> new Thread(imageResizer).start());
-
         List<TestResizer> testResizers = createTestResizerList(filesList);
-        testResizers.forEach(testResizer -> new Thread(testResizer).start());
+
+        testResizers.forEach(Thread::start);
+
+//        List<ImageResizer> imageResizers = createImageResizerList(filesList);
+//        imageResizers.forEach(imageResizer -> new Thread(imageResizer).start());
 
     }
 
