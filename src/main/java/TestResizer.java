@@ -15,16 +15,14 @@ public class TestResizer extends Thread {
     private File[] files;
     private long start;
     private String dstFolder;
-    private Scalr.Method method;
     private static int size = 300;
 
 
-    public TestResizer(File[] files, String dstFolder, int targetWidth, Scalr.Method method, long start) {
+    public TestResizer(File[] files, String dstFolder, int targetWidth, long start) {
         this.targetWidth = targetWidth;
         this.files = files;
         this.start = start;
         this.dstFolder = dstFolder;
-        this.method = method;
     }
 
     @Override
@@ -36,33 +34,13 @@ public class TestResizer extends Thread {
 
                 BufferedImage img = ImageIO.read(image);
 
-                int targetHeight = (int) Math.round(
-                        img.getHeight() / (img.getWidth() / (double) targetWidth)
-                );
+                img = Scalr.resize(img, Scalr.Method.SPEED, size * 2);
 
-//                String typeOfMethod = method.toString();
-//                BufferedImage thumbnail = Scalr.resize(img, method, Scalr.Mode.FIT_TO_HEIGHT, targetWidth, targetHeight);
-//
-//
-//                File newFile = new File(dstFolder + "/" + typeOfMethod + "_" + targetWidth + "_" + targetHeight + "_"
-//                        + image.getName());
-//                ImageIO.write(thumbnail, "jpeg", newFile);
-
-
-                Scalr.Method firstMethod = Scalr.Method.SPEED;
-                Scalr.Method secondMethod = Scalr.Method.ULTRA_QUALITY;
-
-                BufferedImage firstStep;
-                BufferedImage secondStep;
-
-//                firstStep = Scalr.resize(img, firstMethod, Scalr.Mode.AUTOMATIC, targetWidth, targetHeight);
-                firstStep = Scalr.resize(img, firstMethod, size * 2);
-                secondStep = Scalr.resize(firstStep, secondMethod, size);
+                img = Scalr.resize(img, Scalr.Method.ULTRA_QUALITY, size);
 
                 File newFile1 = new File(dstFolder + "/" + size + image.getName());
 
-                ImageIO.write(secondStep, "jpeg", newFile1);
-
+                ImageIO.write(img, "jpeg", newFile1);
 
             }
 

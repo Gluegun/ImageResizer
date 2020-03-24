@@ -8,7 +8,6 @@ import org.imgscalr.*;
 
 public class Main {
 
-
     static int amountToBeSplit = Runtime.getRuntime().availableProcessors();
     static int newWidth = 300;
     static String srcFolder = "/users/sunpu/Desktop/src";
@@ -30,9 +29,6 @@ public class Main {
         List<TestResizer> testResizers = createTestResizerList(filesList);
 
         testResizers.forEach(Thread::start);
-
-//        List<ImageResizer> imageResizers = createImageResizerList(filesList);
-//        imageResizers.forEach(imageResizer -> new Thread(imageResizer).start());
 
     }
 
@@ -69,6 +65,16 @@ public class Main {
 
     }
 
+    public static List<TestResizer> createTestResizerList(List<File[]> files) {
+        List<TestResizer> testResizers = new ArrayList<>();
+
+        for (File[] file : files) {
+            testResizers.add(new TestResizer(file, dstFolder, newWidth, System.currentTimeMillis()));
+        }
+
+        return testResizers;
+    }
+
     public static List<ImageResizer> createImageResizerList(List<File[]> files) {
         List<ImageResizer> imageResizers = new ArrayList<>();
 
@@ -77,16 +83,6 @@ public class Main {
         }
 
         return imageResizers;
-    }
-
-    public static List<TestResizer> createTestResizerList(List<File[]> files) {
-        List<TestResizer> testResizers = new ArrayList<>();
-
-        for (File[] file : files) {
-            testResizers.add(new TestResizer(file, dstFolder, newWidth, method, System.currentTimeMillis()));
-        }
-
-        return testResizers;
     }
 
 }
